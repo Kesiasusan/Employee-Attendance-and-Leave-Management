@@ -3,18 +3,30 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+
 
 function DashboardPage() {
+    const router = useRouter();
+
     const [attendanceStatus, setAttendanceStatus] = useState("Not Checked In");
     const [message, setMessage] = useState("");
     const [workingHours, setWorkingHours] = useState(0);
     const [attendanceHistory, setAttendanceHistory] = useState<any[]>([]);
+
+    // Logout function
+    function handleLogout() {
+        localStorage.removeItem("access_token");
+        router.push("/login");
+    }
 
     useEffect(() => {
         async function fetchHistory() {
             const token = localStorage.getItem("access_token");
 
             if (!token) {
+                router.push("/login");
                 return;
             }
 
@@ -30,6 +42,11 @@ function DashboardPage() {
                 );
 
                 const data = await response.json();
+
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
 
                 if (response.ok) {
                     setAttendanceHistory(data);
@@ -52,7 +69,7 @@ function DashboardPage() {
             const token = localStorage.getItem("access_token");
 
             if (!token) {
-                setMessage("Please login again");
+                handleLogout();
                 return;
             }
 
@@ -99,7 +116,7 @@ function DashboardPage() {
             const token = localStorage.getItem("access_token");
 
             if (!token) {
-                setMessage("Please login again");
+                handleLogout();
                 return;
             }
 
@@ -149,6 +166,10 @@ function DashboardPage() {
             <div>
                 <h1>Employee Dashboard</h1>
                 <p>WELCOME TO DASHBOARD</p>
+
+                <button onClick={handleLogout}>
+                    Logout
+                </button>
             </div>
 
             <div>

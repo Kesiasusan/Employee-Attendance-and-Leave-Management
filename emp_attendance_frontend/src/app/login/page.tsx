@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 function LoginPage() {      
@@ -47,8 +48,11 @@ function LoginPage() {
       <input type="password" placeholder="Password"
       value={password}
       onChange={(e)=>setPassword(e.target.value) } />
-       <button onClick={handleLogin}>Login</button>
-       <p>{message}</p>
+      <button onClick={handleLogin}>Login</button>
+      <p>{message}</p>
+      <p>
+      Don't have an account? <Link href="/register">Register</Link>
+      </p>
     </div>
   );
 }

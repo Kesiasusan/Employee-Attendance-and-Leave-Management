@@ -1,12 +1,11 @@
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Depends, HTTPException
 from app.utils.jwt import verify_access_token
-
 security=HTTPBearer()
 
-#credentials → receives the extracted authentication credentials.
-#HTTPAuthorizationCredentials → specifies the expected credential type.
-#Depends(security) → tells FastAPI to extract the Bearer token first.
+#credentials = receives the extracted authentication credentials.
+#HTTPAuthorizationCredentials = specifies the expected credential type.
+#Depends(security) = tells FastAPI to extract the Bearer token first.
 
 def get_current_user(
       credentials: HTTPAuthorizationCredentials = Depends(security)
